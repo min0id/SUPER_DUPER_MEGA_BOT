@@ -1,11 +1,10 @@
-﻿namespace SUPER_DUPER_MEGA_BOT
+﻿namespace SUPER_DUPER_MEGA_BOT;
+
+internal class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main()
-        {
-            var formWorker = new GoogleFormsWorker("secrets/FormID.txt", "secrets/service_account_secret.json");
-            formWorker.Print();
-        }
+        var formWorker = new GoogleFormsWorker("secrets/FormID.txt", "secrets/service_account_secret.json");
+        formWorker.Print();
     }
 }

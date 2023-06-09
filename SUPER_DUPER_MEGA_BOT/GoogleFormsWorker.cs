@@ -3,79 +3,69 @@ using Google.Apis.Forms.v1;
 using Google.Apis.Forms.v1.Data;
 using Google.Apis.Services;
 
-namespace SUPER_DUPER_MEGA_BOT
+namespace SUPER_DUPER_MEGA_BOT;
+
+internal class GoogleFormsWorker
 {
-    internal class GoogleFormsWorker
+    private string _pathToSecret;
+    private string _pathToFormID;
+
+    private string _formId;
+    
+    private GoogleCredential _credential;
+    private FormsService _formsService;
+
+    private Form _form;
+    private ListFormResponsesResponse responses;
+
+    public GoogleFormsWorker(string pathToFormId, string pathToSecret)
     {
-        private string pathToSecret;
-        private string pathToFormID;
+        _pathToSecret = pathToSecret; 
+        _pathToFormID = pathToFormId;
 
-        private string formId;
-        
-        private GoogleCredential credential;
-        private FormsService formsService;
+        LoadFormIdFromFile();
+        InitializeFormService();
+        LoadForm();
+        LoadResponses();
+    }
 
-        private Form form;
-        ListFormResponsesResponse responses;
-
-        public GoogleFormsWorker(string pathToFormId, string pathToSecret)
+    private void InitializeFormService()
+    {
+        using (var stream = new FileStream(_pathToSecret, FileMode.Open, FileAccess.Read))
         {
-            this.pathToSecret = pathToSecret; 
-            this.pathToFormID = pathToFormId;
-
-            GetFormIdFromFile();
-            InitializeFormService();
-            GetForm();
-            GetResponses();
+            _credential = GoogleCredential.FromStream(stream);
         }
 
-        private void InitializeFormService()
+        _formsService = new FormsService(new BaseClientService.Initializer
         {
-            using (var stream = new FileStream(pathToSecret, FileMode.Open, FileAccess.Read))
+            ApplicationName = "SUPER_DUPER_MEGA_BOT",
+            HttpClientInitializer = _credential,
+        });
+    }
+
+    private void LoadForm() =>
+        _form = _formsService.Forms.Get(_formId).Execute();
+
+    private void LoadResponses() =>
+        responses = _formsService.Forms.Responses.List(_formId).Execute();
+
+    private void LoadFormIdFromFile() =>
+        _formId = File.ReadAllText(_pathToFormID);
+
+    public void Print()
+    {
+        foreach (var item in _form.Items)
+            Console.WriteLine($"{item.QuestionItem.Question.QuestionId} - {item.Title}");
+
+        Console.WriteLine();
+        Console.WriteLine();
+
+        foreach (var response in responses.Responses)
+            foreach (var answer in response.Answers)
             {
-                credential = GoogleCredential.FromStream(stream);
-            }
-
-            formsService = new FormsService(new BaseClientService.Initializer
-            {
-                ApplicationName = "SUPER_DUPER_MEGA_BOT",
-                HttpClientInitializer = credential,
-            });
-        }
-
-        private void GetForm()
-        {
-            form = formsService.Forms.Get(formId).Execute();
-        }
-
-        private void GetResponses()
-        {
-            responses = formsService.Forms.Responses.List(formId).Execute();
-        }
-
-        private void GetFormIdFromFile()
-        {
-            formId = File.ReadAllText(pathToFormID);
-        }
-
-        public void Print()
-        {
-            foreach (var item in form.Items)
-            {
-                Console.WriteLine($"{item.QuestionItem.Question.QuestionId} - {item.Title}");
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-            foreach (var response in responses.Responses)
-            {
-                foreach (var answer in response.Answers) {
-                    Console.WriteLine($"{answer.Value.QuestionId}");
-                    foreach (var ans in answer.Value.TextAnswers.Answers)
-                    {
-                        Console.WriteLine($"\t{ans.Value}");
-                    }
-                }
+                Console.WriteLine($"{answer.Value.QuestionId}");
+                foreach (var ans in answer.Value.TextAnswers.Answers)
+                    Console.WriteLine($"\t{ans.Value}");
             }
         }
     }
-}
