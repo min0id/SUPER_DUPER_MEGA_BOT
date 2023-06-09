@@ -20,6 +20,9 @@ internal static class GoogleFormsWorker
 
     public static void Start(string pathToFormId, string pathToSecret)
     {
+        if (_formsService is not null)
+            return;
+
         _pathToSecret = pathToSecret;
         _pathToFormID = pathToFormId;
 
