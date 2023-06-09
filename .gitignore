@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SUPER_DUPER_MEGA_BOT/service_account_secret.json
+/SUPER_DUPER_MEGA_BOT/FormID.txt
