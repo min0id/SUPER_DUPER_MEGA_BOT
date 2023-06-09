@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SUPER_DUPER_MEGA_BOT": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
