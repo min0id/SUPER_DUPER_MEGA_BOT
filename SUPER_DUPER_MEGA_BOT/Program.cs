@@ -4,7 +4,7 @@
     {
         static void Main()
         {
-            var formWorker = new GoogleFormsWorker("FormID.txt", "service_account_secret.json");
+            var formWorker = new GoogleFormsWorker("secrets/FormID.txt", "secrets/service_account_secret.json");
             formWorker.Print();
         }
     }
