@@ -24,6 +24,9 @@ internal static class TelegramWorker
 
     public static void Start(string pathToApiKey, ManualResetEvent stopEvent)
     {
+        if (_botClient is not null)
+            return;
+
         _pathToApiKey = pathToApiKey;
         _stopEvent = stopEvent;
 
@@ -60,7 +63,7 @@ internal static class TelegramWorker
                 else if (message.Text.ToLower() == "/stop")
                 {
                     await botClient.SendTextMessageAsync(message.Chat, "Ну ок");
-                    _stopEvent.Set();
+                    //_stopEvent.Set();
                     return;
                 }
                 await botClient.SendTextMessageAsync(message.Chat, "Привет-привет!!");
