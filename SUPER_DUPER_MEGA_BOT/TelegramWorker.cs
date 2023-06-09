@@ -55,21 +55,22 @@ internal static class TelegramWorker
             var message = update.Message;
             if (message.Text is not null)
             {
-                if (message.Text.ToLower() == "/start")
+                switch (message.Text.ToLower())
                 {
-                    await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать на борт, добрый путник!");
-                    return;
+                    case "/start":
+                        await botClient.SendTextMessageAsync(message.Chat, "Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...");
+                        break;
+                    case "/stop":
+                        await botClient.SendTextMessageAsync(message.Chat, "Ну, удачной охоты, сталкер.");
+                        break;
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, "Что за бодягу ты мне приволок?");
+                        break;
                 }
-                else if (message.Text.ToLower() == "/stop")
-                {
-                    await botClient.SendTextMessageAsync(message.Chat, "Ну ок");
-                    //_stopEvent.Set();
-                    return;
-                }
-                await botClient.SendTextMessageAsync(message.Chat, "Привет-привет!!");
+                return;
             }
             else {
-                await botClient.SendTextMessageAsync(message.Chat, "Какая-то хуйня");
+                await botClient.SendTextMessageAsync(message.Chat, "Братан, ты не врубаешься? Мне нужен реальный товар!");
             }
         }
     }

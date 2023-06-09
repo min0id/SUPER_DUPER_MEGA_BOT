@@ -18,6 +18,9 @@ internal static class GoogleFormsWorker
     private static Form _form;
     private static ListFormResponsesResponse _responses;
 
+    public static string SerializedForm { get => Newtonsoft.Json.JsonConvert.SerializeObject(_form); }
+    public static string SerializedResponses { get => Newtonsoft.Json.JsonConvert.SerializeObject(_responses); }
+
     public static void Start(string pathToFormId, string pathToSecret)
     {
         if (_formsService is not null)
