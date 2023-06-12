@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432' 
+    
+  super_duper_mega_bot:
+    image: ${DOCKER_REGISTRY-}superdupermegabot
+    build:
+      context: .
+      dockerfile: SUPER_DUPER_MEGA_BOT/Dockerfile
