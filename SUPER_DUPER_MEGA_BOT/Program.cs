@@ -6,8 +6,11 @@ internal class Program
 
     static void Main()
     {
+        var context = new Context();
+            
         GoogleFormsWorker.Start("secrets/FormID.txt", "secrets/service_account_secret.json");
         GoogleFormsWorker.PrintAsJson();
+        GoogleFormsWorker.Print();
 
         TelegramWorker.Start("secrets/telegram_bot_api_key.txt", telegramWorkerStopEvent);
 

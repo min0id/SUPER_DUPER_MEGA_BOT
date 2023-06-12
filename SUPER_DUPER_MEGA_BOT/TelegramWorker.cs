@@ -53,24 +53,21 @@ internal static class TelegramWorker
         if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
         {
             var message = update.Message;
-            if (message.Text is not null)
-            {
-                switch (message.Text.ToLower())
-                {
-                    case "/start":
-                        await botClient.SendTextMessageAsync(message.Chat, "Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...");
-                        break;
-                    case "/stop":
-                        await botClient.SendTextMessageAsync(message.Chat, "Ну, удачной охоты, сталкер.");
-                        break;
-                    default:
-                        await botClient.SendTextMessageAsync(message.Chat, "Что за бодягу ты мне приволок?");
-                        break;
-                }
+            if (message.Text is null) {
+                await botClient.SendTextMessageAsync(message.Chat, "Братан, ты не врубаешься? Мне нужен реальный товар!");
                 return;
             }
-            else {
-                await botClient.SendTextMessageAsync(message.Chat, "Братан, ты не врубаешься? Мне нужен реальный товар!");
+            switch (message.Text.ToLower())
+            {
+                case "/start":
+                    await botClient.SendTextMessageAsync(message.Chat, "Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. Хрен его знает, на кой ляд тебе этот Стрелок сдался, но я в чужие дела не лезу, хочешь убить, значит есть за что...");
+                    break;
+                case "/stop":
+                    await botClient.SendTextMessageAsync(message.Chat, "Ну, удачной охоты, сталкер.");
+                    break;
+                default:
+                    await botClient.SendTextMessageAsync(message.Chat, "Что за бодягу ты мне приволок?");
+                    break;
             }
         }
     }
@@ -78,6 +75,8 @@ internal static class TelegramWorker
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+
+        await Task.Delay(0);
     }
 
 }
